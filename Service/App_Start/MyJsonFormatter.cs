@@ -5,7 +5,7 @@ using System.Net.Http.Headers;
 public class MyJsonFormatter : JsonMediaTypeFormatter {
 
     public MyJsonFormatter() {
-        this.SupportedMediaTypes.Add(new System.Net.Http.Headers.MediaTypeHeaderValue("text/html"));
+        this.SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/html"));
         this.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
     }
 

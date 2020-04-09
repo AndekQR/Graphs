@@ -10,11 +10,9 @@ namespace Client.Service {
         // zarządza baza danych i żadaniami do serisów (publiczna klasa)
 
         private ApiService apiService;
-        private Database db;
 
         public MainRepository() {
             apiService = new ApiService();
-            db = Database.Instance;
         }
     }
 }

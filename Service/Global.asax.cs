@@ -7,11 +7,17 @@ using System.Web.Routing;
 
 namespace Service
 {
-    public class WebApiApplication : System.Web.HttpApplication
+    public class WebApiApplication : HttpApplication
     {
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
+
+            var config = GlobalConfiguration.Configuration;
+
+            // config.Formatters.JsonFormatter
+            //     .SerializerSettings
+            //     .ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
         }
     }
 }

@@ -14,23 +14,29 @@ namespace Client.View {
         }
 
         public string PersonName {
-            get { return this.nameTextBox.Text; }
-            set { this.nameTextBox.Text = value; }
+            get => nameTextBox.Text;
+            set => nameTextBox.Text = value;
         }
 
         public string LastName {
-            get { return this.lastnameTextBox.Text; }
-            set { this.lastnameTextBox.Text = value; }
+            get => lastnameTextBox.Text;
+            set => lastnameTextBox.Text = value;
         }
 
         public string FullName {
-            get { return this.fullnameTextbox.Text; }
-            set { this.fullnameTextbox.Text = value; }
+            get => fullnameTextbox.Text;
+            set => fullnameTextbox.Text = value;
+        }
+
+        public string LogTextBox {
+            get => logTextBox.Text;
+            set => logTextBox.Text = value;
         }
 
         private void button1_Click(object sender, EventArgs e) {
             MainPresenter mainPresenter = new MainPresenter(this);
-            mainPresenter.makeFullName();
+            mainPresenter.MakeFullName();
         }
+
     }
 }

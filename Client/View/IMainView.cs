@@ -10,5 +10,6 @@ namespace Client.View {
         string PersonName { get; set; }
         string LastName { get; set; }
         string FullName { get; set; }
+        string LogTextBox { get; set; }
     }
 }

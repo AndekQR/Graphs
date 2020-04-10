@@ -74,9 +74,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\ApiService.cs" />
+    <Compile Include="Model\Edge.cs" />
+    <Compile Include="Model\Graph.cs" />
+    <Compile Include="Model\GraphPart.cs" />
+    <Compile Include="Model\Node.cs" />
     <Compile Include="Presenter\MainPresenter.cs" />
-    <Compile Include="Service\ApiService.cs" />
-    <Compile Include="Service\MainRepository.cs" />
+    <Compile Include="Service\GraphService.cs" />
     <Compile Include="View\IMainView.cs" />
     <Compile Include="View\MainForm.cs">
       <SubType>Form</SubType>

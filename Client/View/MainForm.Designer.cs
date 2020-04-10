@@ -32,13 +32,14 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.logTextBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // but
             // 
-            this.but.Location = new System.Drawing.Point(344, 279);
+            this.but.Location = new System.Drawing.Point(401, 322);
             this.but.Name = "but";
-            this.but.Size = new System.Drawing.Size(75, 23);
+            this.but.Size = new System.Drawing.Size(87, 27);
             this.but.TabIndex = 0;
             this.but.Text = "Przycisk";
             this.but.UseVisualStyleBackColor = true;
@@ -51,57 +52,66 @@
             // 
             // nameTextBox
             // 
-            this.nameTextBox.Location = new System.Drawing.Point(59, 281);
+            this.nameTextBox.Location = new System.Drawing.Point(69, 324);
             this.nameTextBox.Name = "nameTextBox";
-            this.nameTextBox.Size = new System.Drawing.Size(100, 20);
+            this.nameTextBox.Size = new System.Drawing.Size(116, 23);
             this.nameTextBox.TabIndex = 2;
             // 
             // lastnameTextBox
             // 
-            this.lastnameTextBox.Location = new System.Drawing.Point(165, 281);
+            this.lastnameTextBox.Location = new System.Drawing.Point(192, 324);
             this.lastnameTextBox.Name = "lastnameTextBox";
-            this.lastnameTextBox.Size = new System.Drawing.Size(100, 20);
+            this.lastnameTextBox.Size = new System.Drawing.Size(116, 23);
             this.lastnameTextBox.TabIndex = 3;
             // 
             // fullnameTextbox
             // 
-            this.fullnameTextbox.Location = new System.Drawing.Point(519, 281);
+            this.fullnameTextbox.Location = new System.Drawing.Point(605, 324);
             this.fullnameTextbox.Name = "fullnameTextbox";
-            this.fullnameTextbox.Size = new System.Drawing.Size(100, 20);
+            this.fullnameTextbox.Size = new System.Drawing.Size(116, 23);
             this.fullnameTextbox.TabIndex = 4;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(59, 262);
+            this.label1.Location = new System.Drawing.Point(69, 302);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.Size = new System.Drawing.Size(39, 15);
             this.label1.TabIndex = 5;
             this.label1.Text = "Name";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(165, 265);
+            this.label2.Location = new System.Drawing.Point(192, 306);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 13);
+            this.label2.Size = new System.Drawing.Size(58, 15);
             this.label2.TabIndex = 6;
             this.label2.Text = "Lastname";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(516, 262);
+            this.label3.Location = new System.Drawing.Point(602, 302);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(49, 13);
+            this.label3.Size = new System.Drawing.Size(56, 15);
             this.label3.TabIndex = 7;
             this.label3.Text = "Fullname";
             // 
+            // logTextBox
+            // 
+            this.logTextBox.Location = new System.Drawing.Point(97, 97);
+            this.logTextBox.Multiline = true;
+            this.logTextBox.Name = "logTextBox";
+            this.logTextBox.Size = new System.Drawing.Size(334, 100);
+            this.logTextBox.TabIndex = 8;
+            // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(933, 519);
+            this.Controls.Add(this.logTextBox);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -113,7 +123,6 @@
             this.Text = "Form1";
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
@@ -126,6 +135,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox logTextBox;
     }
 }
 

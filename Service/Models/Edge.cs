@@ -13,7 +13,7 @@ namespace Service.Models {
         public string Uid { get; set; }
 
         [JsonIgnore]
-        public GraphPart GraphPart { get; set; }
+        public virtual GraphPart GraphPart { get; set; }
 
         public Edge(Node dest, double weight) {
             this.Destination = dest;

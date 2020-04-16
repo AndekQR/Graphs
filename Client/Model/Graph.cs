@@ -17,7 +17,7 @@ namespace Client.Model {
             string result = "";
             foreach (GraphPart graphPart in GraphPart) {
                 foreach (Edge edge in graphPart.Edge) {
-                    result += graphPart.Node.Label + " -> " + edge.Destination.Label + Environment.NewLine;
+                    result += graphPart.Node.Label + " " + edge.Weight +" -> " + edge.Destination.Label + Environment.NewLine;
                 }
             }
 

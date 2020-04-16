@@ -13,8 +13,9 @@ namespace Service.Models {
 
         public int Id { get; set; }
 
-        [Required] public virtual Node Destination { get; set; }
+        public virtual Node Destination { get; set; }
 
+        [Required]
         public double Weight { get; set; }
         public string Uid { get; set; }
 

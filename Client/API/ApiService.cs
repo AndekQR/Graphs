@@ -22,9 +22,16 @@ namespace Client.API {
                 new MediaTypeWithQualityHeaderValue("application/json"));
         }
         public async Task<Graph> GetGraph(int id) {
-            string response = await HttpClient.GetStringAsync("getgraph/" + id);
-            Graph data = JsonConvert.DeserializeObject<Graph>(response);
-            return data;
+            // string response = await HttpClient.GetStringAsync("getgraph/" + id);
+            // Graph data = JsonConvert.DeserializeObject<Graph>(response);
+            // return data;
+            HttpResponseMessage response = await HttpClient.GetAsync("getgraph/" + id);
+            return response.IsSuccessStatusCode ? response.Content.ReadAsAsync<Graph>().Result : null;
+        }
+
+        public async Task<Graph> SaveGraph(Graph graph) {
+            HttpResponseMessage response = await HttpClient.PostAsJsonAsync("postgraph/", graph);
+            return response.IsSuccessStatusCode ? response.Content.ReadAsAsync<Graph>().Result : null;
         }
     }
 }

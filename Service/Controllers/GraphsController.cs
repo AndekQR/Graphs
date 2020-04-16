@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Microsoft.EntityFrameworkCore;
 using Service.Models;
 using Service.Services;
+using EntityState = System.Data.Entity.EntityState;
 
 namespace Service.Controllers {
     public class GraphsController : ApiController {
-        private readonly MyDbContext _db = new MyDbContext();
         private readonly GraphService _graphService = new GraphService();
 
         [HttpGet]
@@ -28,16 +29,15 @@ namespace Service.Controllers {
             return Ok(graph);
         }
 
-        // GET: api/Graphs
+        [HttpGet]
         public List<Graph> GetGraphs() {
-            DbSet<Graph> graphs = _db.Graphs;
-            return graphs.ToList();
+            return _graphService.GetAllGraphs();
         }
-
-        // GET: api/Graphs/5
+        
+        [HttpGet]
         [ResponseType(typeof(Graph))]
         public IHttpActionResult GetGraph(int id) {
-            Graph graph = _db.Graphs.Find(id);
+            Graph graph = _graphService.GetGraph(id);
             if (graph == null) return NotFound();
 
             return Ok(graph);
@@ -53,11 +53,11 @@ namespace Service.Controllers {
         //     if (id != graph.Id) {
         //         return BadRequest();
         //     }
-        //
-        //     db.Entry(graph).State = EntityState.Modified;
+        //     
+        //     _db.Entry(graph).State = EntityState.Modified;
         //
         //     try {
-        //         db.SaveChanges();
+        //         _db.SaveChanges();
         //     } catch (DbUpdateConcurrencyException) {
         //         if (!GraphExists(id)) {
         //             return NotFound();
@@ -68,19 +68,15 @@ namespace Service.Controllers {
         //
         //     return StatusCode(HttpStatusCode.NoContent);
         // }
-
-        // POST: api/Graphs
-        [ResponseType(typeof(Graph))] //do sprawdzenia
+        
+        [HttpPost]
         public IHttpActionResult PostGraph(Graph graph) {
             if (!ModelState.IsValid) return BadRequest(ModelState);
-
-            _db.Graphs.Add(graph);
-            _db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new {id = graph.Id}, graph);
+            _graphService.SaveGraph(graph);
+            return CreatedAtRoute("ActionApi", new {id = graph.Id}, graph);
         }
-
-        // DELETE: api/Graphs/5
+        
+        [HttpDelete]
         [ResponseType(typeof(Graph))]
         public IHttpActionResult DeleteGraph(int id) {
             try {

@@ -100,5 +100,13 @@ namespace Service.Services {
             db.Graphs.Add(graph);
             db.SaveChanges();
         }
+
+        public List<Graph> GetAllGraphs() {
+            return db.Graphs.ToList();
+        }
+
+        public Graph GetGraph(int id) {
+            return db.Graphs.Find(id);
+        }
     }
 }

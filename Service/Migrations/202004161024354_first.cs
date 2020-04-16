@@ -3,7 +3,7 @@
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class mi : DbMigration
+    public partial class first : DbMigration
     {
         public override void Up()
         {
@@ -13,11 +13,12 @@
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Weight = c.Double(nullable: false),
-                        Destination_Id = c.Int(),
+                        Uid = c.String(),
+                        Destination_Id = c.Int(nullable: false),
                         GraphPart_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Nodes", t => t.Destination_Id)
+                .ForeignKey("dbo.Nodes", t => t.Destination_Id, cascadeDelete: true)
                 .ForeignKey("dbo.GraphParts", t => t.GraphPart_Id)
                 .Index(t => t.Destination_Id)
                 .Index(t => t.GraphPart_Id);
@@ -28,6 +29,7 @@
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Label = c.String(),
+                        Uid = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -36,6 +38,7 @@
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
+                        Uid = c.String(),
                         Graph_Id = c.Int(),
                         Node_Id = c.Int(),
                     })
@@ -50,16 +53,8 @@
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
+                        Uid = c.String(),
                         Directed = c.Boolean(nullable: false),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.Products",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(nullable: false, maxLength: 50),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -75,7 +70,6 @@
             DropIndex("dbo.GraphParts", new[] { "Graph_Id" });
             DropIndex("dbo.Edges", new[] { "GraphPart_Id" });
             DropIndex("dbo.Edges", new[] { "Destination_Id" });
-            DropTable("dbo.Products");
             DropTable("dbo.Graphs");
             DropTable("dbo.GraphParts");
             DropTable("dbo.Nodes");

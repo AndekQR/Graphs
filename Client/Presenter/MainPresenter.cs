@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Client.API;
 using Client.Model;
 using Client.Service;
 using Client.View;
@@ -9,13 +12,15 @@ namespace Client.Presenter {
 
         private readonly IMainView _mainView;
         private readonly GraphService _graphService;
+        private readonly ApiService _apiService;
 
         public MainPresenter(IMainView mainView) {
             this._mainView = mainView;
             _graphService = new GraphService();
+            _apiService = new ApiService();
         }
 
-        public void MakeFullName() {
+        public async Task MakeFullName() {
             Graph graph = _graphService.NewGraph(true);
 
             Node nodeA = _graphService.AddNode(ref graph, "nodeA");
@@ -31,8 +36,15 @@ namespace Client.Presenter {
             string firstName = _mainView.PersonName;
             string lastName = _mainView.LastName;
             string fullName = firstName + " " + lastName;
+
+
+
+            new Thread(async x => {
+                Graph downloadedGraph = await _apiService.GetGraph(2);
+                _mainView.LogTextBox = downloadedGraph.ToString();
+            }).Start();
+            
             _mainView.FullName = fullName;
-            _mainView.LogTextBox = graph.ToString();
         }
     }
 }

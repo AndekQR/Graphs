@@ -1,20 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿
+using System;
+using System.Net;
 using System.Net.Http;
-using System.Text;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Client.Model;
+using Newtonsoft.Json;
 
-namespace Client.Service {
+namespace Client.API {
 
     internal class ApiService {
-        // żądania do serwisów
 
-        private HttpClient client;
-        private string baseAddress = "https://localhost:44313/api";
+        private static readonly HttpClient HttpClient;
+        private const string BaseAddress = "https://localhost:44313/api/graphs/";
 
-        public ApiService() {
-            this.client = new HttpClient();
+        static ApiService() {
+            HttpClient = new HttpClient();
+            HttpClient.BaseAddress = new Uri(BaseAddress);
+            HttpClient.DefaultRequestHeaders.Accept.Clear();
+            HttpClient.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+        }
+        public async Task<Graph> GetGraph(int id) {
+            string response = await HttpClient.GetStringAsync("getgraph/" + id);
+            Graph data = JsonConvert.DeserializeObject<Graph>(response);
+            return data;
         }
     }
 }

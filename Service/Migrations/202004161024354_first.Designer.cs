@@ -7,13 +7,13 @@ namespace Service.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class graphs_uid_service : IMigrationMetadata
+    public sealed partial class first : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(graphs_uid_service));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(first));
         
         string IMigrationMetadata.Id
         {
-            get { return "202004092053500_graphs_uid_service"; }
+            get { return "202004161024354_first"; }
         }
         
         string IMigrationMetadata.Source

@@ -171,13 +171,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\202004091610291_mi.cs" />
-    <Compile Include="Migrations\202004091610291_mi.Designer.cs">
-      <DependentUpon>202004091610291_mi.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202004092053500_graphs_uid_service.cs" />
-    <Compile Include="Migrations\202004092053500_graphs_uid_service.Designer.cs">
-      <DependentUpon>202004092053500_graphs_uid_service.cs</DependentUpon>
+    <Compile Include="Migrations\202004161024354_first.cs" />
+    <Compile Include="Migrations\202004161024354_first.Designer.cs">
+      <DependentUpon>202004161024354_first.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Edge.cs" />
@@ -202,11 +198,8 @@
     <Folder Include="helpers" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202004091610291_mi.resx">
-      <DependentUpon>202004091610291_mi.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202004092053500_graphs_uid_service.resx">
-      <DependentUpon>202004092053500_graphs_uid_service.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202004161024354_first.resx">
+      <DependentUpon>202004161024354_first.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -9,6 +9,7 @@ namespace Client.Model {
             Uid = uid;
         }
         
+        public int Id { get; set; }
         public  Node Node { get; set; }
         public List<Edge> Edge { get; set; }
         public string Uid { get; set; }

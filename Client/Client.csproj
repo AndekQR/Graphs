@@ -83,6 +83,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\ApiService.cs" />
+    <Compile Include="helpers\ObjectExtensions.cs" />
     <Compile Include="Model\Edge.cs" />
     <Compile Include="Model\Graph.cs" />
     <Compile Include="Model\GraphPart.cs" />

@@ -9,6 +9,7 @@ namespace Client.Model {
             Uid = uid;
         }
 
+        public int Id { get; set; }
         public List<GraphPart> GraphPart { get; set; }
         public string Uid { get; set; }
         public bool Directed { get; set; }

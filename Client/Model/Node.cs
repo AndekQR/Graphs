@@ -4,6 +4,8 @@
             Label = label;
             Uid = uid;
         }
+        
+        public int Id { get; set; }
         public string Label { get; set; }
         public string Uid { get; set; }
     }

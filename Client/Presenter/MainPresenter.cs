@@ -38,14 +38,12 @@ namespace Client.Presenter {
 
 
             new Thread(async x => {
-                Graph downloadedGraph = await _apiService.GetGraph(2);
+                Graph downloadedGraph = await _apiService.GetGraph(1004);
                 if (downloadedGraph != null) {
                     _mainView.LogTextBox = downloadedGraph.ToString();
-                    Graph postResult = await _apiService.SaveGraph(graph);
-                    _mainView.LogTextBox = _mainView.LogTextBox + Environment.NewLine + (postResult != null
-                            ? postResult.ToString()
-                            : "null")
-                        ;
+                   _graphService.AddEdge(_graphService.FindSourceNode(downloadedGraph, 1010), _graphService.FindDestinationNode(downloadedGraph, 1008), ref downloadedGraph);
+                   Graph updateResult = await _apiService.UpdateGraph(downloadedGraph);
+                   _mainView.LogTextBox += Environment.NewLine + updateResult.ToString();
                 }
                 else {
                     _mainView.LogTextBox = "graph null";

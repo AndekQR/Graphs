@@ -4,6 +4,7 @@ namespace Service.Models {
     public class MyDbContext : DbContext {
         public MyDbContext()
             : base("name=MyDbContext") {
+            // Configuration.LazyLoadingEnabled = false;
         }
 
         public virtual DbSet<Graph> Graphs { get; set; }
@@ -12,6 +13,7 @@ namespace Service.Models {
         public virtual DbSet<GraphPart> GraphParts { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder) {
+           
         }
     }
 }

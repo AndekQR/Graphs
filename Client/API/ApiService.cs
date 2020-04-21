@@ -33,5 +33,10 @@ namespace Client.API {
             HttpResponseMessage response = await HttpClient.PostAsJsonAsync("postgraph/", graph);
             return response.IsSuccessStatusCode ? response.Content.ReadAsAsync<Graph>().Result : null;
         }
+        
+        public async Task<Graph> UpdateGraph(Graph graph) {
+            HttpResponseMessage response = await HttpClient.PutAsJsonAsync("putgraph/", graph);
+            return response.IsSuccessStatusCode ? response.Content.ReadAsAsync<Graph>().Result : null;
+        }
     }
 }

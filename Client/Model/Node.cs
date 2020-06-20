@@ -1,5 +1,5 @@
 ﻿namespace Client.Model {
-    public class Node {
+    public class Node  {
         public Node(string label, string uid) {
             Label = label;
             Uid = uid;

@@ -1,16 +1,16 @@
 ﻿using Client.Presenter;
 using System;
 using System.Windows.Forms;
+using GraphX.PCL.Common.Models;
 
 namespace Client.View {
-
     public partial class MainForm : Form, IMainView {
 
         public MainForm() {
             InitializeComponent();
-
             /*Binding binding = new Binding("Text", nameTextBox, "Text");
             lastnameTextBox.DataBindings.Add(binding);*/
+            
         }
 
         public string PersonName {
@@ -30,12 +30,20 @@ namespace Client.View {
 
         public string LogTextBox {
             get => logTextBox.Text;
-            set => logTextBox.Text = value;
+            set {
+                if (logTextBox.InvokeRequired) {
+                    logTextBox.Invoke(new Action(() => LogTextBox = value));
+                }
+                else {
+                    logTextBox.Text = value;
+                }
+            }
         }
 
         private void button1_Click(object sender, EventArgs e) {
             MainPresenter mainPresenter = new MainPresenter(this);
             mainPresenter.MakeFullName();
+
         }
 
     }

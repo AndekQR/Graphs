@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 
 namespace Service.Models {
     public class Edge {
+        
         public Edge(Node dest, double weight) {
             Destination = dest;
             Weight = weight;

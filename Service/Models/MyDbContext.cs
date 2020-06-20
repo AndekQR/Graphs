@@ -6,7 +6,6 @@ namespace Service.Models {
             : base("name=MyDbContext") {
             // Configuration.LazyLoadingEnabled = false;
         }
-
         public virtual DbSet<Graph> Graphs { get; set; }
         public virtual DbSet<Node> Nodes { get; set; }
         public virtual DbSet<Edge> Edges { get; set; }

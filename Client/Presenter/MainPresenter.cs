@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 using Client.API;
@@ -36,17 +37,20 @@ namespace Client.Presenter {
             string lastName = _mainView.LastName;
             string fullName = firstName + " " + lastName;
 
-
+            BackgroundWorker backgroundWorker = new BackgroundWorker();
             new Thread(async x => {
                 Graph downloadedGraph = await _apiService.GetGraph(1004);
                 if (downloadedGraph != null) {
-                    _mainView.LogTextBox = downloadedGraph.ToString();
-                   _graphService.AddEdge(_graphService.FindSourceNode(downloadedGraph, 1010), _graphService.FindDestinationNode(downloadedGraph, 1008), ref downloadedGraph);
-                   Graph updateResult = await _apiService.UpdateGraph(downloadedGraph);
-                   _mainView.LogTextBox += Environment.NewLine + updateResult.ToString();
+                    _mainView.LogTextBox += "Po pobraniu: " + Environment.NewLine;
+                    _mainView.LogTextBox += downloadedGraph.ToString();
+                    _graphService.AddEdge(_graphService.FindNode(downloadedGraph, 1010),
+                        _graphService.FindNode(downloadedGraph, 1008), ref downloadedGraph);
+                    Graph updateResult = await _apiService.UpdateGraph(downloadedGraph);
+                    _mainView.LogTextBox += "Po aktualizacji: " + Environment.NewLine;
+                    _mainView.LogTextBox += Environment.NewLine + updateResult.ToString();
                 }
                 else {
-                    _mainView.LogTextBox = "graph null";
+                    _mainView.LogTextBox += "graph null";
                 }
             }).Start();
 

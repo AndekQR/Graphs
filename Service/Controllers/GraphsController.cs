@@ -61,7 +61,6 @@ namespace Service.Controllers {
             catch (KeyNotFoundException e) {
                 return NotFound();
             }
-            
             return CreatedAtRoute("ActionApi", new {id = graph.Id}, graph);
         }
         

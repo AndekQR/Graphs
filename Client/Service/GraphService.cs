@@ -91,7 +91,7 @@ namespace Client.Service {
                         }
         }
 
-        public Node FindSourceNode(Graph graph, int id) {
+        public Node FindNode(Graph graph, int id) {
             return graph.GraphPart.FirstOrDefault(x => x.Node.Id == id)?.Node;
         }
 
@@ -103,7 +103,6 @@ namespace Client.Service {
                     }
                 }
             }
-
             return null;
         }
     }

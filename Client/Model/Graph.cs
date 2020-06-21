@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Client.Model {
+
     public class Graph {
+
         public Graph(bool directed, List<GraphPart> graphPart, string uid) {
             Directed = directed;
             GraphPart = graphPart;
@@ -15,14 +18,9 @@ namespace Client.Model {
         public bool Directed { get; set; }
 
         public override string ToString() {
-            string result = "";
-            foreach (GraphPart graphPart in GraphPart) {
-                foreach (Edge edge in graphPart.Edge) {
-                    result += graphPart.Node.Label + " " + edge.Weight +" -> " + edge.Destination.Label + Environment.NewLine;
-                }
-            }
+            string name = $"{GraphPart.Count} nodes. {(Directed ? "Directed" : "Undirected")}";
 
-            return result;
+            return name;
         }
     }
 }

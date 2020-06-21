@@ -1,13 +1,17 @@
-﻿using System;
-using System.ComponentModel;
-using System.Threading;
-using System.Threading.Tasks;
-using Client.API;
+﻿using Client.API;
+using Client.helpers;
 using Client.Model;
 using Client.Service;
 using Client.View;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Client.Presenter {
+
     public class MainPresenter {
         private readonly ApiService _apiService;
         private readonly GraphService _graphService;
@@ -20,41 +24,46 @@ namespace Client.Presenter {
             _apiService = new ApiService();
         }
 
-        public async Task MakeFullName() {
-            Graph graph = _graphService.NewGraph(true);
+        public DirectedGraphVisualizer convertToDirectedVisualization(Graph graph) {
+            DirectedGraphVisualizer dataGraph = new DirectedGraphVisualizer();
+            _mainView.LogTextBox = "convertToDirectedVisualization";
 
-            Node nodeA = _graphService.AddNode(ref graph, "nodeA");
-            Node nodeB = _graphService.AddNode(ref graph, "nodeB");
-            Node nodeC = _graphService.AddNode(ref graph, "nodeC");
+            foreach (GraphPart part in graph.GraphPart) {
+                dataGraph.AddVertex(part.Node);
+            }
+            var nodes = dataGraph.Vertices.ToList();
 
-            _graphService.AddEdge(nodeA, nodeB, ref graph, 12.0D);
-            _graphService.AddEdge(nodeB, nodeA, ref graph, 10.0D);
-            _graphService.AddEdge(nodeC, nodeA, ref graph, 7.0D);
+            foreach (GraphPart part in graph.GraphPart) {
+                foreach (Edge edge in part.Edge) {
+                    edge.Source = findNode(nodes, part.Node.ID);
+                    edge.Target = findNode(nodes, edge.Target.ID);
 
-            _graphService.RemoveEdge(nodeB, nodeA, ref graph);
-
-            string firstName = _mainView.PersonName;
-            string lastName = _mainView.LastName;
-            string fullName = firstName + " " + lastName;
-
-            BackgroundWorker backgroundWorker = new BackgroundWorker();
-            new Thread(async x => {
-                Graph downloadedGraph = await _apiService.GetGraph(1004);
-                if (downloadedGraph != null) {
-                    _mainView.LogTextBox += "Po pobraniu: " + Environment.NewLine;
-                    _mainView.LogTextBox += downloadedGraph.ToString();
-                    _graphService.AddEdge(_graphService.FindNode(downloadedGraph, 1010),
-                        _graphService.FindNode(downloadedGraph, 1008), ref downloadedGraph);
-                    Graph updateResult = await _apiService.UpdateGraph(downloadedGraph);
-                    _mainView.LogTextBox += "Po aktualizacji: " + Environment.NewLine;
-                    _mainView.LogTextBox += Environment.NewLine + updateResult.ToString();
+                    try {
+                        bool result = dataGraph.AddEdge(edge);
+                    } catch (Exception e) {
+                        _mainView.LogTextBox = e.Message;
+                    }
                 }
-                else {
-                    _mainView.LogTextBox += "graph null";
-                }
-            }).Start();
+            }
+            return dataGraph;
+        }
 
-            _mainView.FullName = fullName;
+        private Node findNode(List<Node> nodes, long id) {
+            return nodes.Find(x => x.ID == id);
+        }
+
+        public async Task<Graph> GetGraphAsync(int graphId) {
+            Graph graph = await _apiService.GetGraph(graphId);
+            return graph;
+        }
+
+        public async Task<List<Graph>> getAllGraphsAsync() {
+            List<Graph> graphs = await _apiService.getAllGraphs();
+            if (graphs.IsNotNull()) {
+                return graphs;
+            } else {
+                return new List<Graph>();
+            }
         }
     }
 }

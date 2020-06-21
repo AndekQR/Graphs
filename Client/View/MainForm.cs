@@ -1,31 +1,87 @@
-﻿using Client.Presenter;
+﻿using Client.helpers;
+using Client.Model;
+using Client.Presenter;
+using GraphX.Controls;
+using GraphX.Controls.Models;
+using GraphX.PCL.Common.Enums;
+using GraphX.PCL.Logic.Algorithms.OverlapRemoval;
+using GraphX.PCL.Logic.Models;
+using QuickGraph;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Threading;
+using System.Windows;
 using System.Windows.Forms;
-using GraphX.PCL.Common.Models;
 
 namespace Client.View {
+
     public partial class MainForm : Form, IMainView {
+        private ZoomControl _zoomControl;
+        private GraphAreaVisualizer _graphAreaVisualizer;
 
         public MainForm() {
             InitializeComponent();
             /*Binding binding = new Binding("Text", nameTextBox, "Text");
             lastnameTextBox.DataBindings.Add(binding);*/
-            
+            Load += GraphLoad;
+
+            new Thread(new ThreadStart(() => {
+                if (graphsListView.InvokeRequired) {
+                    graphsListView.Invoke(new Action(() => initListView()));
+                } else {
+                    initListView();
+                }
+            })).Start();
         }
 
-        public string PersonName {
-            get => nameTextBox.Text;
-            set => nameTextBox.Text = value;
+        private async void initListView() {
+            graphsListView.Columns.Add("Graphs", graphsListView.Width);
+
+            graphsListView.BeginUpdate();
+
+            List<Graph> graphs = await new MainPresenter(this).getAllGraphsAsync();
+            foreach (Graph graph in graphs) {
+                ListViewItem item = new ListViewItem(graph.ToString());
+                item.Tag = graph;
+                graphsListView.Items.Add(item);
+            }
         }
 
-        public string LastName {
-            get => lastnameTextBox.Text;
-            set => lastnameTextBox.Text = value;
+        private void GraphLoad(object sender, EventArgs e) {
+            wpfHost.Child = initEmptyGraphVisualization();
+            _graphAreaVisualizer.GenerateGraph(true);
+            _graphAreaVisualizer.SetVerticesDrag(true, true);
         }
 
-        public string FullName {
-            get => fullnameTextbox.Text;
-            set => fullnameTextbox.Text = value;
+        private UIElement initEmptyGraphVisualization() {
+            _zoomControl = new ZoomControl();
+            ZoomControl.SetViewFinderVisibility(_zoomControl, Visibility.Visible);
+            var logic = new GXLogicCore<Node, Edge, BidirectionalGraph<Node, Edge>>();
+            _graphAreaVisualizer = new GraphAreaVisualizer {
+                LogicCore = logic,
+                EdgeLabelFactory = new DefaultEdgelabelFactory()
+            };
+            logic.DefaultLayoutAlgorithm = LayoutAlgorithmTypeEnum.LinLog;
+            logic.DefaultLayoutAlgorithmParams = logic.AlgorithmFactory.CreateLayoutParameters(LayoutAlgorithmTypeEnum.LinLog);
+            //((LinLogLayoutParameters)logic.DefaultLayoutAlgorithmParams). = 100;
+            logic.DefaultOverlapRemovalAlgorithm = OverlapRemovalAlgorithmTypeEnum.FSA;
+            logic.DefaultOverlapRemovalAlgorithmParams = logic.AlgorithmFactory.CreateOverlapRemovalParameters(OverlapRemovalAlgorithmTypeEnum.FSA);
+            ((OverlapRemovalParameters)logic.DefaultOverlapRemovalAlgorithmParams).HorizontalGap = 50;
+            ((OverlapRemovalParameters)logic.DefaultOverlapRemovalAlgorithmParams).VerticalGap = 50;
+            logic.DefaultEdgeRoutingAlgorithm = EdgeRoutingAlgorithmTypeEnum.None;
+            logic.AsyncAlgorithmCompute = false;
+            _graphAreaVisualizer.ShowAllEdgesLabels(true);
+            _zoomControl.Content = _graphAreaVisualizer;
+
+            var myResourceDictionary = new ResourceDictionary { Source = new Uri("Templates\\template.xaml", UriKind.Relative) };
+            _zoomControl.Resources.MergedDictionaries.Add(myResourceDictionary);
+
+            return _zoomControl;
+        }
+
+        public ListView graphsListViewProperty {
+            get => graphsListView;
         }
 
         public string LogTextBox {
@@ -33,18 +89,30 @@ namespace Client.View {
             set {
                 if (logTextBox.InvokeRequired) {
                     logTextBox.Invoke(new Action(() => LogTextBox = value));
-                }
-                else {
+                } else {
                     logTextBox.Text = value;
                 }
             }
         }
 
-        private void button1_Click(object sender, EventArgs e) {
-            MainPresenter mainPresenter = new MainPresenter(this);
-            mainPresenter.MakeFullName();
+        private void graphsListView_Click(object sender, EventArgs e) {
+            Graph selectedGraph = (Graph)graphsListView.SelectedItems[0].Tag;
 
+            BackgroundWorker background = new BackgroundWorker();
+            background.DoWork += UpdateGraphVisualization;
+            background.RunWorkerAsync(selectedGraph.Id);
         }
 
+        private async void UpdateGraphVisualization(object sender, DoWorkEventArgs e) {
+            //pobieranie id z listy
+            MainPresenter mainPresenter = new MainPresenter(this);
+            Graph graphToShow = await mainPresenter.GetGraphAsync((int)e.Argument);
+            if (graphToShow.IsNull()) throw new ArgumentException();
+            BeginInvoke(new Action(() => {
+                _graphAreaVisualizer.ClearLayout();
+
+                _graphAreaVisualizer.GenerateGraph(mainPresenter.convertToDirectedVisualization(graphToShow));
+            }));
+        }
     }
 }

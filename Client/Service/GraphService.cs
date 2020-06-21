@@ -6,7 +6,9 @@ using Client.helpers;
 using Client.Model;
 
 namespace Client.Service {
-    public class GraphService {  //TODO: prawie wszystkie metody do aktualizacji z serwisu 
+
+    public class GraphService {  //TODO: prawie wszystkie metody do aktualizacji z serwisu
+
         public Graph NewGraph(bool directed) {
             string uid = Guid.NewGuid().ToString();
             List<GraphPart> graphParts = new List<GraphPart>();
@@ -21,35 +23,31 @@ namespace Client.Service {
             graph.GraphPart.Add(graphPart);
             return node;
         }
-        
+
         public void AddEdge(Node source, Node destination, ref Graph graph, double weight = 1.0D) {
             if (IsInGraph(graph, source) && IsInGraph(graph, destination)) {
                 Edge edgeToCheck = IsEdgeExists(source, destination, graph);
                 if (edgeToCheck.IsNotNull()) {
                     ChangeEdgeData(ref edgeToCheck, NewEdge(destination, weight));
-                }
-                else {
+                } else {
                     Edge edge = NewEdge(destination, weight);
                     graph.GraphPart.ToList().Find(part => part.Node.Uid == source.Uid).Edge.Add(edge);
                 }
-                
+
                 if (!graph.Directed) {
                     Edge edge = IsEdgeExists(destination, source, graph);
                     if (edge.IsNotNull()) {
                         ChangeEdgeData(ref edge, NewEdge(source, weight));
-                    }
-                    else {
+                    } else {
                         Edge directedEdge = NewEdge(source, weight);
                         graph.GraphPart.ToList().Find(part => part.Node.Uid == destination.Uid).Edge.Add(directedEdge);
                     }
-                    
                 }
-            }
-            else {
+            } else {
                 throw new DataException("Node not in graph");
             }
         }
-        
+
         private Edge NewEdge(Node destination, double weight) {
             string uid = Guid.NewGuid().ToString();
             Edge edge = new Edge(destination, weight, uid);
@@ -92,13 +90,13 @@ namespace Client.Service {
         }
 
         public Node FindNode(Graph graph, int id) {
-            return graph.GraphPart.FirstOrDefault(x => x.Node.Id == id)?.Node;
+            return graph.GraphPart.FirstOrDefault(x => x.Node.ID == id)?.Node;
         }
 
         public Node FindDestinationNode(Graph graph, int id) {
             foreach (GraphPart graphPart in graph.GraphPart) {
                 foreach (Edge edge in graphPart.Edge) {
-                    if (edge.Destination.Id == id) {
+                    if (edge.Destination.ID == id) {
                         return edge.Destination;
                     }
                 }

@@ -23,119 +23,126 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.components = new System.ComponentModel.Container();
-            this.but = new System.Windows.Forms.Button();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.nameTextBox = new System.Windows.Forms.TextBox();
-            this.lastnameTextBox = new System.Windows.Forms.TextBox();
-            this.fullnameTextbox = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.logTextBox = new System.Windows.Forms.TextBox();
+            this.wpfHost = new System.Windows.Forms.Integration.ElementHost();
+            this.graphsListView = new System.Windows.Forms.ListView();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // but
+            // logTextBox
             // 
-            this.but.Location = new System.Drawing.Point(401, 322);
-            this.but.Name = "but";
-            this.but.Size = new System.Drawing.Size(87, 27);
-            this.but.TabIndex = 0;
-            this.but.Text = "Przycisk";
-            this.but.UseVisualStyleBackColor = true;
-            this.but.Click += new System.EventHandler(this.button1_Click);
+            this.logTextBox.Location = new System.Drawing.Point(719, 486);
+            this.logTextBox.Multiline = true;
+            this.logTextBox.Name = "logTextBox";
+            this.logTextBox.Size = new System.Drawing.Size(287, 87);
+            this.logTextBox.TabIndex = 8;
             // 
-            // contextMenuStrip1
+            // wpfHost
             // 
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            this.wpfHost.Location = new System.Drawing.Point(319, 13);
+            this.wpfHost.Name = "wpfHost";
+            this.wpfHost.Size = new System.Drawing.Size(700, 441);
+            this.wpfHost.TabIndex = 9;
+            this.wpfHost.Text = "elementHost2";
+            this.wpfHost.Child = null;
             // 
-            // nameTextBox
+            // graphsListView
             // 
-            this.nameTextBox.Location = new System.Drawing.Point(69, 324);
-            this.nameTextBox.Name = "nameTextBox";
-            this.nameTextBox.Size = new System.Drawing.Size(116, 23);
-            this.nameTextBox.TabIndex = 2;
+            this.graphsListView.BackColor = System.Drawing.SystemColors.Window;
+            this.graphsListView.FullRowSelect = true;
+            this.graphsListView.GridLines = true;
+            this.graphsListView.HideSelection = false;
+            this.graphsListView.Location = new System.Drawing.Point(13, 13);
+            this.graphsListView.MultiSelect = false;
+            this.graphsListView.Name = "graphsListView";
+            this.graphsListView.Size = new System.Drawing.Size(300, 440);
+            this.graphsListView.Sorting = System.Windows.Forms.SortOrder.Ascending;
+            this.graphsListView.TabIndex = 10;
+            this.graphsListView.UseCompatibleStateImageBehavior = false;
+            this.graphsListView.View = System.Windows.Forms.View.Details;
+            this.graphsListView.Click += new System.EventHandler(this.graphsListView_Click);
             // 
-            // lastnameTextBox
+            // button1
             // 
-            this.lastnameTextBox.Location = new System.Drawing.Point(192, 324);
-            this.lastnameTextBox.Name = "lastnameTextBox";
-            this.lastnameTextBox.Size = new System.Drawing.Size(116, 23);
-            this.lastnameTextBox.TabIndex = 3;
+            this.button1.Location = new System.Drawing.Point(12, 486);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 11;
+            this.button1.Text = "Add graph";
+            this.button1.UseVisualStyleBackColor = true;
             // 
-            // fullnameTextbox
+            // button2
             // 
-            this.fullnameTextbox.Location = new System.Drawing.Point(605, 324);
-            this.fullnameTextbox.Name = "fullnameTextbox";
-            this.fullnameTextbox.Size = new System.Drawing.Size(116, 23);
-            this.fullnameTextbox.TabIndex = 4;
+            this.button2.Location = new System.Drawing.Point(12, 537);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(97, 36);
+            this.button2.TabIndex = 12;
+            this.button2.Text = "Delete selected graph";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(155, 506);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(244, 56);
+            this.button3.TabIndex = 13;
+            this.button3.Text = " Using fine-grained calculations.";
+            this.button3.UseVisualStyleBackColor = true;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(405, 506);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(244, 56);
+            this.button4.TabIndex = 14;
+            this.button4.Text = "Using coarse-grained calculations.";
+            this.button4.UseVisualStyleBackColor = true;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(69, 302);
+            this.label1.Location = new System.Drawing.Point(187, 474);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(39, 15);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "Name";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(192, 306);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(58, 15);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "Lastname";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(602, 302);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(56, 15);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "Fullname";
-            // 
-            // logTextBox
-            // 
-            this.logTextBox.Location = new System.Drawing.Point(97, 97);
-            this.logTextBox.Multiline = true;
-            this.logTextBox.Name = "logTextBox";
-            this.logTextBox.Size = new System.Drawing.Size(334, 100);
-            this.logTextBox.TabIndex = 8;
+            this.label1.Size = new System.Drawing.Size(443, 13);
+            this.label1.TabIndex = 15;
+            this.label1.Text = "Determining the node from which the sum of the minimum roads to the other nodes i" +
+    "s minimal.";
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(933, 519);
-            this.Controls.Add(this.logTextBox);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
+            this.ClientSize = new System.Drawing.Size(1031, 588);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.fullnameTextbox);
-            this.Controls.Add(this.lastnameTextBox);
-            this.Controls.Add(this.nameTextBox);
-            this.Controls.Add(this.but);
+            this.Controls.Add(this.button4);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.graphsListView);
+            this.Controls.Add(this.wpfHost);
+            this.Controls.Add(this.logTextBox);
             this.Name = "MainForm";
             this.Text = "Form1";
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
+        private System.Windows.Forms.TextBox logTextBox;
 
         #endregion
 
-        private System.Windows.Forms.Button but;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.TextBox nameTextBox;
-        private System.Windows.Forms.TextBox lastnameTextBox;
-        private System.Windows.Forms.TextBox fullnameTextbox;
+        private System.Windows.Forms.Integration.ElementHost elementHost1;
+        private System.Windows.Forms.Integration.ElementHost wpfHost;
+        private System.Windows.Forms.ListView graphsListView;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox logTextBox;
     }
 }
 

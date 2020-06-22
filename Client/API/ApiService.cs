@@ -44,5 +44,10 @@ namespace Client.API {
             HttpResponseMessage response = await HttpClient.GetAsync("GetGraphs/");
             return response.IsSuccessStatusCode ? response.Content.ReadAsAsync<List<Graph>>().Result : null;
         }
+
+        public async Task<bool> DeleteGraph(int id) {
+            HttpResponseMessage response = await HttpClient.DeleteAsync("DeleteGraph/" + id);
+            return response.IsSuccessStatusCode ? true : false;
+        }
     }
 }

@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Bogus;
 using Client.helpers;
 using Client.Model;
+using Client.Model.Visualization;
 
 namespace Client.Service {
 
@@ -90,18 +92,42 @@ namespace Client.Service {
         }
 
         public Node FindNode(Graph graph, int id) {
-            return graph.GraphPart.FirstOrDefault(x => x.Node.ID == id)?.Node;
+            return graph.GraphPart.FirstOrDefault(x => x.Node.Id == id)?.Node;
         }
 
         public Node FindDestinationNode(Graph graph, int id) {
             foreach (GraphPart graphPart in graph.GraphPart) {
                 foreach (Edge edge in graphPart.Edge) {
-                    if (edge.Destination.ID == id) {
+                    if (edge.Destination.Id == id) {
                         return edge.Destination;
                     }
                 }
             }
             return null;
+        }
+
+        public Graph GetRandomGraph(int vertices, Boolean directed) {
+            var faker = new Faker("en");
+            Graph graph = NewGraph(directed);
+
+            List<Node> nodes = new List<Node>();
+            for (int i = 0; i < vertices; i++) {
+                var node = this.AddNode(ref graph, faker.Name.FirstName());
+                nodes.Add(node);
+            }
+
+            foreach (Node node in nodes) {
+                if (nodes.Count > 1) {
+                    for (int j = 0; j < faker.Random.Int(1, 3); j++) {
+                        Node dest = nodes[faker.Random.Int(0, nodes.Count - 1)];
+                        Edge edge = IsEdgeExists(node, dest, graph);
+                        if (edge == null) {
+                            AddEdge(node, dest, ref graph, Math.Round(faker.Random.Double(1, vertices * 2), 2));
+                        }
+                    }
+                }
+            }
+            return graph;
         }
     }
 }

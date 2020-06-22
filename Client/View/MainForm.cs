@@ -1,5 +1,6 @@
 ﻿using Client.helpers;
 using Client.Model;
+using Client.Model.Visualization;
 using Client.Presenter;
 using GraphX.Controls;
 using GraphX.Controls.Models;
@@ -27,11 +28,7 @@ namespace Client.View {
             Load += GraphLoad;
 
             new Thread(new ThreadStart(() => {
-                if (graphsListView.InvokeRequired) {
-                    graphsListView.Invoke(new Action(() => initListView()));
-                } else {
-                    initListView();
-                }
+                initListView();
             })).Start();
         }
 
@@ -44,8 +41,15 @@ namespace Client.View {
             foreach (Graph graph in graphs) {
                 ListViewItem item = new ListViewItem(graph.ToString());
                 item.Tag = graph;
-                graphsListView.Items.Add(item);
+
+                if (graphsListView.InvokeRequired) {
+                    graphsListView.Invoke(new Action(() => graphsListView.Items.Add(item)));
+                } else {
+                    graphsListView.Items.Add(item);
+                }
             }
+
+            graphsListView.EndUpdate();
         }
 
         private void GraphLoad(object sender, EventArgs e) {
@@ -57,7 +61,7 @@ namespace Client.View {
         private UIElement initEmptyGraphVisualization() {
             _zoomControl = new ZoomControl();
             ZoomControl.SetViewFinderVisibility(_zoomControl, Visibility.Visible);
-            var logic = new GXLogicCore<Node, Edge, BidirectionalGraph<Node, Edge>>();
+            var logic = new GXLogicCore<NodeV, EdgeV, BidirectionalGraph<NodeV, EdgeV>>();
             _graphAreaVisualizer = new GraphAreaVisualizer {
                 LogicCore = logic,
                 EdgeLabelFactory = new DefaultEdgelabelFactory()
@@ -80,10 +84,6 @@ namespace Client.View {
             return _zoomControl;
         }
 
-        public ListView graphsListViewProperty {
-            get => graphsListView;
-        }
-
         public string LogTextBox {
             get => logTextBox.Text;
             set {
@@ -93,6 +93,10 @@ namespace Client.View {
                     logTextBox.Text = value;
                 }
             }
+        }
+
+        public ListView graphsListViewProperty {
+            get => graphsListView;
         }
 
         private void graphsListView_Click(object sender, EventArgs e) {
@@ -113,6 +117,19 @@ namespace Client.View {
 
                 _graphAreaVisualizer.GenerateGraph(mainPresenter.convertToDirectedVisualization(graphToShow));
             }));
+        }
+
+        private void AddGraphButton_Click(object sender, EventArgs e) {
+            NewGraphForm newGraphForm = new NewGraphForm() {
+                Owner = this
+            };
+            newGraphForm.ShowDialog();
+        }
+
+        private void DeleteGraphButton_Click(object sender, EventArgs e) {
+            MainPresenter mainPresenter = new MainPresenter(this);
+            int idToDelete = ((Graph)graphsListView.SelectedItems[0].Tag).Id;
+            mainPresenter.deleteGraph(idToDelete);
         }
     }
 }

@@ -9,15 +9,17 @@ using Service.Models;
 using Service.Services.Interfaces;
 
 namespace Service.Services {
+
     public class GraphService : IGraphService {
+
         public Graph NewGraph(bool directed) {
-            Graph graph = new Graph(directed) {Uid = Guid.NewGuid().ToString(), GraphPart = new List<GraphPart>()};
+            Graph graph = new Graph(directed) { Uid = Guid.NewGuid().ToString(), GraphPart = new List<GraphPart>() };
             return graph;
         }
 
         public Node AddNode(ref Graph graph, string label) {
-            Node node = new Node(label) {Uid = Guid.NewGuid().ToString()};
-            GraphPart graphPart = new GraphPart {Uid = Guid.NewGuid().ToString(), Edge = new List<Edge>(), Node = node};
+            Node node = new Node(label) { Uid = Guid.NewGuid().ToString() };
+            GraphPart graphPart = new GraphPart { Uid = Guid.NewGuid().ToString(), Edge = new List<Edge>(), Node = node };
             graph.GraphPart.Add(graphPart);
             return node;
         }
@@ -27,8 +29,7 @@ namespace Service.Services {
                 Edge edgeToCheck = IsEdgeExists(source, destination, graph);
                 if (edgeToCheck.IsNotNull()) {
                     ChangeEdgeData(ref edgeToCheck, NewEdge(destination, weight));
-                }
-                else {
+                } else {
                     Edge edge = NewEdge(destination, weight);
                     graph.GraphPart.ToList().Find(part => part.Node.Uid == source.Uid).Edge.Add(edge);
                 }
@@ -37,14 +38,12 @@ namespace Service.Services {
                     Edge edge = IsEdgeExists(destination, source, graph);
                     if (edge.IsNotNull()) {
                         ChangeEdgeData(ref edge, NewEdge(source, weight));
-                    }
-                    else {
+                    } else {
                         Edge directedEdge = NewEdge(source, weight);
                         graph.GraphPart.ToList().Find(part => part.Node.Uid == destination.Uid).Edge.Add(directedEdge);
                     }
                 }
-            }
-            else {
+            } else {
                 throw new DataException("Node not in graph");
             }
         }
@@ -75,7 +74,7 @@ namespace Service.Services {
                 if (target.IsNull()) throw new KeyNotFoundException("Graph id not found");
 
                 IQueryable<GraphPart> graphParts = db.GraphParts
-                    .Include(x=> x.Node)
+                    .Include(x => x.Node)
                     .Where(x => x.Graph.Id == target.Id);
 
                 foreach (GraphPart graphPart in graphParts.ToList()) {
@@ -100,14 +99,26 @@ namespace Service.Services {
             }
         }
 
-
         public void SaveGraph(Graph graph) {
             using (MyDbContext db = new MyDbContext()) {
+                fixReferences(ref graph);
                 db.Graphs.Add(graph);
                 db.SaveChanges();
             }
         }
 
+        //Po deserializacji wierzchołki grafu były zapisywane w bazie z innymi polami ID
+        //po wywołaniu tej metody ich referencje są ustawiane tak żeby w bazie danych ich ID były takie same
+        private void fixReferences(ref Graph graph) {
+            foreach (GraphPart part in graph.GraphPart) {
+                foreach (Edge edge in part.Edge) {
+                    Node node = graph.GraphPart.Find(x => (x.Node.Label == edge.Destination.Label && x.Node.Uid == edge.Destination.Uid)).Node;
+                    if (node != null) {
+                        edge.Destination = node;
+                    }
+                }
+            }
+        }
 
         public List<Graph> GetAllGraphs() {
             using (MyDbContext db = new MyDbContext()) {
@@ -186,7 +197,7 @@ namespace Service.Services {
         //                         // db.Entry(edge.Destination).State = EntityState.Modified;
         //                     }
         //                 }
-        //                 
+        //
         //                 db.SaveChanges();
         //             }
         //             else {

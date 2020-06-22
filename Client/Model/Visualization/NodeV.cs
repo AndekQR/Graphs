@@ -1,19 +1,18 @@
 ﻿using GraphX.PCL.Common.Models;
 using System;
 
-namespace Client.Model {
+namespace Client.Model.Visualization {
 
-    public class Node {
+    public class NodeV : VertexBase {
 
-        public Node() {
+        public NodeV() {
         }
 
-        public Node(string label, string uid) {
+        public NodeV(string label, string uid) {
             Label = label;
             Uid = uid;
         }
 
-        public int Id { get; set; }
         public string Label { get; set; }
         public string Uid { get; set; }
 

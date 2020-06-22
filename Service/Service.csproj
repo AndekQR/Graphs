@@ -168,6 +168,10 @@
     <Compile Include="Migrations\202004170654178_second.Designer.cs">
       <DependentUpon>202004170654178_second.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202006221728335_collectionToListMigration.cs" />
+    <Compile Include="Migrations\202006221728335_collectionToListMigration.Designer.cs">
+      <DependentUpon>202006221728335_collectionToListMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Edge.cs" />
     <Compile Include="Models\Graph.cs" />
@@ -196,6 +200,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202004170654178_second.resx">
       <DependentUpon>202004170654178_second.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006221728335_collectionToListMigration.resx">
+      <DependentUpon>202006221728335_collectionToListMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

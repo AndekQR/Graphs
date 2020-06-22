@@ -12,6 +12,10 @@ namespace Client.Model {
             Uid = uid;
         }
 
+        public Graph() {
+            GraphPart = new List<GraphPart>();
+        }
+
         public int Id { get; set; }
         public List<GraphPart> GraphPart { get; set; }
         public string Uid { get; set; }

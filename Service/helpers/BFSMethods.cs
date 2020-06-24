@@ -8,7 +8,7 @@ namespace Service.helpers
     public class BFSMethods
     {
 
-        public static Dictionary<string, HashSet<string>> graphAsAdjacencyList(Graph g)
+        public static Dictionary<string, HashSet<string>> GraphAsAdjacencyList(Graph g)
         {
             Dictionary<string, HashSet<string>> result = new Dictionary<string, HashSet<string>>();
             foreach (GraphPart p in g.GraphPart){
@@ -68,10 +68,10 @@ namespace Service.helpers
             return shortestPath;
         }
 
-        public static Dictionary<string, double> shortestPathToAll(Graph graph, Node start)
+        public static Dictionary<string, int> ShortestPathToAll(Graph graph, Node start)
         {
-            Dictionary<string, double> result = new Dictionary<string, double>();
-            var adjList = graphAsAdjacencyList(graph);
+            Dictionary<string, int> result = new Dictionary<string, int>();
+            var adjList = GraphAsAdjacencyList(graph);
             var shortestPath = ShortestPathFunction(adjList, start.Label);
             foreach(string vertex in adjList.Keys)
             {
@@ -82,10 +82,11 @@ namespace Service.helpers
             return result;
         }
 
-        public static double shortestPathToGiven(Graph graph, Node start, Node end)
+        public static int ShortestPathToGiven(Graph graph, Node start, Node end)
         {
-            var adjList = graphAsAdjacencyList(graph);
+            var adjList = GraphAsAdjacencyList(graph);
             var shortestPath = ShortestPathFunction(adjList, start.Label);
+            Console.WriteLine("Najkrótsza ścieżka od {0} do {1}: {2}", start.Label, end.Label, string.Join(", ", shortestPath(end.Label)));
             return shortestPath(end.Label).Count() - 1;
         }
     }

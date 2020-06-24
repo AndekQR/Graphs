@@ -46,9 +46,9 @@ namespace ServiceTest
             }
             var result = ShortestPathToAll(graph, nodeA);
             Console.WriteLine("Od {0}", nodeA.Label);
-            foreach (KeyValuePair<string, double> kpv in result)
+            foreach (KeyValuePair<Node, int> kpv in result)
             {
-                Console.WriteLine("do {0} - długość {1}", kpv.Key, kpv.Value);
+                Console.WriteLine("do {0} - długość {1}", kpv.Key.Label, kpv.Value);
             }
         }
 

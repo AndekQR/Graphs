@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static Service.helpers.ObjectExtensions;
 
 namespace Service.helpers
 {
@@ -68,16 +69,21 @@ namespace Service.helpers
             return shortestPath;
         }
 
-        public static Dictionary<string, int> ShortestPathToAll(Graph graph, Node start)
+        public static Dictionary<Node, int> ShortestPathToAll(Graph graph, Node start)
         {
-            Dictionary<string, int> result = new Dictionary<string, int>();
+            Dictionary<Node, int> result = new Dictionary<Node, int>();
             var adjList = GraphAsAdjacencyList(graph);
             var shortestPath = ShortestPathFunction(adjList, start.Label);
             foreach(string vertex in adjList.Keys)
             {
                 // Graf nieskierowany - nie musi istnieć ścieżka do każdego z pozostałtych w tym kierunku
                 Console.WriteLine("shortest path to {0,2}: {1}",vertex, string.Join(", ", shortestPath(vertex)));
-                result.Add(vertex, shortestPath(vertex).Count()-1);
+                GraphPart graphPart = graph.GraphPart.ToList().Find(part => part.Node.Label == vertex);
+                if (graphPart.IsNull())
+                {
+                    throw new System.ArgumentException("Nie znaleziono danego node w grafie");
+                }
+                result.Add(graphPart.Node, shortestPath(vertex).Count()-1);
             }
             return result;
         }

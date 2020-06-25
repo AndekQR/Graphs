@@ -32,6 +32,10 @@ namespace Service.Services.Interfaces {
 
         Node findNodeByLabel(Graph graph, String label);
 
-        Node getMinNodeCoarseGrainedAsync(Graph graph);
+        Node getMinNodeCoarseGrained(Graph graph);
+
+        Node GetMinNodeDijkstra(Graph graph);
+
+        double GetWeightBetweenNodesDijkstra(Graph graph, Node start, Node end);
     }
 }

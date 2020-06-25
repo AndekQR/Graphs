@@ -65,7 +65,6 @@ namespace Service.Controllers {
             return CreatedAtRoute("ActionApi", new { id = graph.Id }, graph);
         }
 
-        //TODO: do poprawy, graph.id juz jset inne po wywołaniu metody savegraph
         [HttpPost]
         public IHttpActionResult PostGraph(Graph graph) {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -86,7 +85,7 @@ namespace Service.Controllers {
 
         [HttpPost]
         [ResponseType(typeof(int))]
-        public IHttpActionResult GetMinimalPathWeight(BFSObject bFSObject) {
+        public IHttpActionResult GetMinimalPathWeightBFS(BFSObject bFSObject) {
             Graph graph = _graphService.GetGraph(bFSObject.graphId);
             Node startNode = _graphService.findNodeByLabel(graph, bFSObject.startNodeLabel);
             Node endNode = _graphService.findNodeByLabel(graph, bFSObject.endNodeLabel);
@@ -101,10 +100,37 @@ namespace Service.Controllers {
 
         [HttpPost]
         [ResponseType(typeof(Node))]
-        public IHttpActionResult GetMinNode(BFSObject bfsObject) {
+        public IHttpActionResult GetMinNodeBFS(BFSObject bfsObject) {
             Graph graph = _graphService.GetGraph(bfsObject.graphId);
             if (graph != null) {
-                return Ok(_graphService.getMinNodeCoarseGrainedAsync(graph));
+                return Ok(_graphService.getMinNodeCoarseGrained(graph));
+            } else {
+                return NotFound();
+            }
+        }
+
+        [HttpPost]
+        [ResponseType(typeof(Node))]
+        public IHttpActionResult GetMinNodeDijkstra(BFSObject bfsObject) {
+            Graph graph = _graphService.GetGraph(bfsObject.graphId);
+            if (graph == null) {
+                return NotFound();
+            } else {
+                Node node = _graphService.GetMinNodeDijkstra(graph);
+                return Ok(node);
+            }
+        }
+
+        [HttpPost]
+        [ResponseType(typeof(double))]
+        public IHttpActionResult GetWeightBetweenNodesDijkstra(BFSObject bfsObject) {
+            Graph graph = _graphService.GetGraph(bfsObject.graphId);
+            Node startNode = _graphService.findNodeByLabel(graph, bfsObject.startNodeLabel);
+            Node endNode = _graphService.findNodeByLabel(graph, bfsObject.endNodeLabel);
+
+            if (graph != null && startNode != null && endNode != null) {
+                double weight = _graphService.GetWeightBetweenNodesDijkstra(graph, startNode, endNode);
+                return Ok(weight);
             } else {
                 return NotFound();
             }

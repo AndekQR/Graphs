@@ -159,8 +159,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="helpers\BFSMethods.cs" />
-    <Compile Include="helpers\BFSObject.cs" />
+    <Compile Include="Services\BFSMethods.cs" />
+    <Compile Include="Models\BFSObject.cs" />
     <Compile Include="helpers\ObjectExtensions.cs" />
     <Compile Include="Migrations\202004161024354_first.cs" />
     <Compile Include="Migrations\202004161024354_first.Designer.cs">
@@ -181,6 +181,7 @@
     <Compile Include="Models\Node.cs" />
     <Compile Include="Models\GraphPart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\DijkstraAlgorithm.cs" />
     <Compile Include="Services\GraphService.cs" />
     <Compile Include="Services\Interfaces\IGraphService.cs" />
   </ItemGroup>

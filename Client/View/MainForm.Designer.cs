@@ -35,6 +35,8 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.bfs_coarse_button = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
+            this.dijkstra_fineGradient = new System.Windows.Forms.Button();
+            this.dijkstra_coarseGradient = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -104,6 +106,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.dijkstra_fineGradient);
             this.panel1.Controls.Add(this.bfs_fine_button);
             this.panel1.Controls.Add(this.textBox1);
             this.panel1.Location = new System.Drawing.Point(190, 490);
@@ -132,6 +135,7 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.dijkstra_coarseGradient);
             this.panel2.Controls.Add(this.bfs_coarse_button);
             this.panel2.Controls.Add(this.textBox2);
             this.panel2.Location = new System.Drawing.Point(416, 490);
@@ -157,6 +161,26 @@
             this.textBox2.Size = new System.Drawing.Size(207, 20);
             this.textBox2.TabIndex = 1;
             this.textBox2.Text = "Using coarse-grained calculations";
+            // 
+            // dijkstra_fineGradient
+            // 
+            this.dijkstra_fineGradient.Location = new System.Drawing.Point(4, 59);
+            this.dijkstra_fineGradient.Name = "dijkstra_fineGradient";
+            this.dijkstra_fineGradient.Size = new System.Drawing.Size(207, 24);
+            this.dijkstra_fineGradient.TabIndex = 2;
+            this.dijkstra_fineGradient.Text = "Dijkstra Method";
+            this.dijkstra_fineGradient.UseVisualStyleBackColor = true;
+            this.dijkstra_fineGradient.Click += new System.EventHandler(this.dijkstra_fineGradient_Click);
+            // 
+            // dijkstra_coarseGradient
+            // 
+            this.dijkstra_coarseGradient.Location = new System.Drawing.Point(4, 59);
+            this.dijkstra_coarseGradient.Name = "dijkstra_coarseGradient";
+            this.dijkstra_coarseGradient.Size = new System.Drawing.Size(207, 24);
+            this.dijkstra_coarseGradient.TabIndex = 3;
+            this.dijkstra_coarseGradient.Text = "Dijkstra Method";
+            this.dijkstra_coarseGradient.UseVisualStyleBackColor = true;
+            this.dijkstra_coarseGradient.Click += new System.EventHandler(this.dijkstra_coarseGradient_Click);
             // 
             // MainForm
             // 
@@ -197,6 +221,8 @@
         private System.Windows.Forms.Button bfs_coarse_button;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Button dijkstra_fineGradient;
+        private System.Windows.Forms.Button dijkstra_coarseGradient;
     }
 }
 

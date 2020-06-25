@@ -165,7 +165,7 @@ namespace Service.Services {
             return graph.GraphPart.Find(part => part.Node.Label == label).Node;
         }
 
-        public Node getMinNodeCoarseGrainedAsync(Graph graph) {
+        public Node getMinNodeCoarseGrained(Graph graph) {
             GraphPart minPart = null;
             int minWeight = int.MaxValue;
             int sum = 0;
@@ -181,6 +181,17 @@ namespace Service.Services {
                 sum = 0;
             }
             return minPart.Node;
+        }
+
+        public Node GetMinNodeDijkstra(Graph graph) {
+            DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(graph);
+            return dijkstra.getMinNode();
+        }
+
+        public double GetWeightBetweenNodesDijkstra(Graph graph, Node start, Node end) {
+            DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(graph);
+            dijkstra.start(start);
+            return dijkstra.getRoadWeightToNode(end);
         }
     }
 }

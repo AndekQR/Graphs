@@ -1,13 +1,10 @@
-﻿using System;
+﻿using Client.Model;
+using Service.helpers;
+using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using System.Windows.Documents;
-using Client.Model;
-using Newtonsoft.Json;
-using Service.helpers;
 
 namespace Client.API {
 
@@ -57,7 +54,7 @@ namespace Client.API {
                 startNodeLabel = start,
                 endNodeLabel = end
             };
-            HttpResponseMessage response = await HttpClient.PostAsJsonAsync("GetMinimalPathWeight/", bFSObject);
+            HttpResponseMessage response = await HttpClient.PostAsJsonAsync("GetMinimalPathWeightBFS/", bFSObject);
             return response.IsSuccessStatusCode ? response.Content.ReadAsAsync<int>().Result : -1;
         }
 
@@ -65,8 +62,26 @@ namespace Client.API {
             BFSObject bfsObject = new BFSObject() {
                 graphId = graphId
             };
-            HttpResponseMessage response = await HttpClient.PostAsJsonAsync("GetMinNode/", bfsObject);
+            HttpResponseMessage response = await HttpClient.PostAsJsonAsync("GetMinNodeBFS/", bfsObject);
             return response.IsSuccessStatusCode ? response.Content.ReadAsAsync<Node>().Result : null;
+        }
+
+        public async Task<Node> GetMinNodeDijkstra(int graphId) {
+            BFSObject bfsObject = new BFSObject() {
+                graphId = graphId
+            };
+            HttpResponseMessage response = await HttpClient.PostAsJsonAsync("GetMinNodeDijkstra/", bfsObject);
+            return response.IsSuccessStatusCode ? response.Content.ReadAsAsync<Node>().Result : null;
+        }
+
+        public async Task<double> GetMinimalPathWeightDijkstra(int id, string start, string end) {
+            BFSObject bFSObject = new BFSObject() {
+                graphId = id,
+                startNodeLabel = start,
+                endNodeLabel = end
+            };
+            HttpResponseMessage response = await HttpClient.PostAsJsonAsync("GetWeightBetweenNodesDijkstra/", bFSObject);
+            return response.IsSuccessStatusCode ? response.Content.ReadAsAsync<double>().Result : -1.0;
         }
     }
 }

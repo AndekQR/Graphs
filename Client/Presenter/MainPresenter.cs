@@ -161,5 +161,34 @@ namespace Client.Presenter {
             });
             return sum;
         }
+
+        public async Task<Node> getMinNodeUsingDijkstraCoarseGradientAsync(Graph graph) {
+            return await _apiService.GetMinNodeDijkstra(graph.Id);
+        }
+
+        public async Task<Node> getMinNodeUsingDijkstraFineGradient(Graph graph) {
+            Dictionary<Node, double> values = new Dictionary<Node, double>();
+            foreach (GraphPart part1 in graph.GraphPart) {
+                double tmp = 0;
+                foreach (GraphPart part2 in graph.GraphPart) {
+                    double weightToPart2 = await _apiService.GetMinimalPathWeightDijkstra(graph.Id, part1.Node.Label, part2.Node.Label);
+                    tmp += weightToPart2;
+                }
+                values.Add(part1.Node, tmp);
+            }
+            return getMinValueFromDict(values);
+        }
+
+        private Node getMinValueFromDict(Dictionary<Node, double> values) {
+            Node minNode = null;
+            double minWeight = double.MaxValue;
+            values.ForEach(x => {
+                if (x.Value < minWeight) {
+                    minNode = x.Key;
+                    minWeight = x.Value;
+                }
+            });
+            return minNode;
+        }
     }
 }

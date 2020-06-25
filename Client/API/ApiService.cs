@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Documents;
 using Client.Model;
 using Newtonsoft.Json;
+using Service.helpers;
 
 namespace Client.API {
 
@@ -48,6 +49,24 @@ namespace Client.API {
         public async Task<bool> DeleteGraph(int id) {
             HttpResponseMessage response = await HttpClient.DeleteAsync("DeleteGraph/" + id);
             return response.IsSuccessStatusCode ? true : false;
+        }
+
+        public async Task<int> GetMinimalPathWeight(int id, string start, string end) {
+            BFSObject bFSObject = new BFSObject() {
+                graphId = id,
+                startNodeLabel = start,
+                endNodeLabel = end
+            };
+            HttpResponseMessage response = await HttpClient.PostAsJsonAsync("GetMinimalPathWeight/", bFSObject);
+            return response.IsSuccessStatusCode ? response.Content.ReadAsAsync<int>().Result : -1;
+        }
+
+        public async Task<Node> GetMinimalPathToAll(int graphId) {
+            BFSObject bfsObject = new BFSObject() {
+                graphId = graphId
+            };
+            HttpResponseMessage response = await HttpClient.PostAsJsonAsync("GetMinNode/", bfsObject);
+            return response.IsSuccessStatusCode ? response.Content.ReadAsAsync<Node>().Result : null;
         }
     }
 }

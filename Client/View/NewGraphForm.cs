@@ -16,10 +16,10 @@ namespace Client.View {
         private void GenerateAndSaveButton_Click(object sender, EventArgs e) {
             MainPresenter mainPresenter = new MainPresenter();
             int vertices = 0;
-            bool directed = directed_checkbox.Checked;
+            bool weights = weights_checkbox.Checked;
             if (Int32.TryParse(nodes_textBox.Text, out vertices)) {
                 CreateGraphTread = new Thread(async () => {
-                    Graph graph = mainPresenter.CreateRandomoGraphAsync(vertices, directed).Result;
+                    Graph graph = mainPresenter.CreateRandomoGraphAsync(vertices, weights).Result;
                     ListViewItem item = new ListViewItem(graph.ToString());
                     item.Tag = graph;
                     MainForm owner = Owner as MainForm;

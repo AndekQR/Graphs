@@ -25,7 +25,7 @@
         private void InitializeComponent() {
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.directed_checkbox = new System.Windows.Forms.CheckBox();
+            this.weights_checkbox = new System.Windows.Forms.CheckBox();
             this.nodes_textBox = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -49,15 +49,15 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.GenerateAndSaveButton_Click);
             // 
-            // directed_checkbox
+            // weights_checkbox
             // 
-            this.directed_checkbox.AutoSize = true;
-            this.directed_checkbox.Location = new System.Drawing.Point(15, 84);
-            this.directed_checkbox.Name = "directed_checkbox";
-            this.directed_checkbox.Size = new System.Drawing.Size(66, 17);
-            this.directed_checkbox.TabIndex = 2;
-            this.directed_checkbox.Text = "Directed";
-            this.directed_checkbox.UseVisualStyleBackColor = true;
+            this.weights_checkbox.AutoSize = true;
+            this.weights_checkbox.Location = new System.Drawing.Point(15, 84);
+            this.weights_checkbox.Name = "weights_checkbox";
+            this.weights_checkbox.Size = new System.Drawing.Size(93, 17);
+            this.weights_checkbox.TabIndex = 2;
+            this.weights_checkbox.Text = "With weights?";
+            this.weights_checkbox.UseVisualStyleBackColor = true;
             // 
             // nodes_textBox
             // 
@@ -83,7 +83,7 @@
             this.ClientSize = new System.Drawing.Size(232, 173);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.nodes_textBox);
-            this.Controls.Add(this.directed_checkbox);
+            this.Controls.Add(this.weights_checkbox);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
             this.Name = "NewGraphForm";
@@ -97,7 +97,7 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.CheckBox directed_checkbox;
+        private System.Windows.Forms.CheckBox weights_checkbox;
         private System.Windows.Forms.TextBox nodes_textBox;
         private System.Windows.Forms.Button button2;
     }

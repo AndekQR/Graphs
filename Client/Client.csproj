@@ -127,6 +127,7 @@
   <ItemGroup>
     <Compile Include="API\ApiService.cs" />
     <Compile Include="helpers\ObjectExtensions.cs" />
+    <Compile Include="Model\BFSObject.cs" />
     <Compile Include="Model\Edge.cs" />
     <Compile Include="Model\Node.cs" />
     <Compile Include="Model\Visualization\EdgeV.cs" />

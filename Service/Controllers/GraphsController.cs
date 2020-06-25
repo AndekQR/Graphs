@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Service.helpers;
 using Service.Models;
 using Service.Services;
 using Service.Services.Interfaces;
@@ -79,6 +80,32 @@ namespace Service.Controllers {
                 _graphService.DeleteGraph(id);
                 return Ok();
             } catch (KeyNotFoundException) {
+                return NotFound();
+            }
+        }
+
+        [HttpPost]
+        [ResponseType(typeof(int))]
+        public IHttpActionResult GetMinimalPathWeight(BFSObject bFSObject) {
+            Graph graph = _graphService.GetGraph(bFSObject.graphId);
+            Node startNode = _graphService.findNodeByLabel(graph, bFSObject.startNodeLabel);
+            Node endNode = _graphService.findNodeByLabel(graph, bFSObject.endNodeLabel);
+
+            if (startNode != null && endNode != null) {
+                int weight = BFSMethods.ShortestPathToGiven(graph, startNode, endNode);
+                return Ok(weight);
+            } else {
+                return NotFound();
+            }
+        }
+
+        [HttpPost]
+        [ResponseType(typeof(Node))]
+        public IHttpActionResult GetMinNode(BFSObject bfsObject) {
+            Graph graph = _graphService.GetGraph(bfsObject.graphId);
+            if (graph != null) {
+                return Ok(_graphService.getMinNodeCoarseGrainedAsync(graph));
+            } else {
                 return NotFound();
             }
         }

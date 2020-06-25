@@ -106,7 +106,7 @@ namespace Client.Service {
             return null;
         }
 
-        public Graph GetRandomGraph(int vertices, Boolean directed) {
+        public Graph GetRandomGraph(int vertices, bool directed, bool weights) {
             var faker = new Faker("en");
             Graph graph = NewGraph(directed);
 
@@ -122,7 +122,11 @@ namespace Client.Service {
                         Node dest = nodes[faker.Random.Int(0, nodes.Count - 1)];
                         Edge edge = IsEdgeExists(node, dest, graph);
                         if (edge == null) {
-                            AddEdge(node, dest, ref graph, Math.Round(faker.Random.Double(1, vertices * 2), 2));
+                            if (weights) {
+                                AddEdge(node, dest, ref graph, Math.Round(faker.Random.Double(1, vertices * 2), 2));
+                            } else {
+                                AddEdge(node, dest, ref graph, 1.0);
+                            }
                         }
                     }
                 }

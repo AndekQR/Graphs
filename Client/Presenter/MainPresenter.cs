@@ -4,6 +4,7 @@ using Client.Model;
 using Client.Model.Visualization;
 using Client.Service;
 using Client.View;
+using GraphX.PCL.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,8 +78,8 @@ namespace Client.Presenter {
             }
         }
 
-        public async Task<Graph> CreateRandomoGraphAsync(int vertices, Boolean directed) {
-            Graph graph = _graphService.GetRandomGraph(vertices, directed);
+        public async Task<Graph> CreateRandomoGraphAsync(int vertices, Boolean weights) {
+            Graph graph = _graphService.GetRandomGraph(vertices, true, weights);
             Graph savedGraph = await _apiService.SaveGraph(graph);
             return savedGraph;
         }
@@ -106,6 +107,59 @@ namespace Client.Presenter {
                     }
                 }
             }).Start();
+        }
+
+        public async Task<Node> getMinNodeCoarseGrainedAsync(Graph graph) {
+            return await _apiService.GetMinimalPathToAll(graph.Id);
+        }
+
+        public async Task<Node> getMinNodeFineGradientAsync(Graph graph) {
+            //od jakiego graphpart, <do jakiego, jaka waga>
+            Dictionary<GraphPart, Dictionary<GraphPart, int>> result = new Dictionary<GraphPart, Dictionary<GraphPart, int>>();
+            foreach (GraphPart partFrom in graph.GraphPart) {
+                foreach (GraphPart partTo in graph.GraphPart) {
+                    if (result.ContainsKey(partFrom)) {
+                        int weight = await this.getMinPathWeight(graph.Id, partFrom, partTo);
+                        result[partFrom].Add(partTo, weight);
+                    } else {
+                        result.Add(partFrom, new Dictionary<GraphPart, int>());
+                        int weight = await this.getMinPathWeight(graph.Id, partFrom, partTo);
+                        result[partFrom].Add(partTo, weight);
+                    }
+                }
+            }
+
+            return calculateMinNode(result);
+        }
+
+        private async Task<int> getMinPathWeight(int grapid, GraphPart from, GraphPart to) {
+            int weight = await _apiService.GetMinimalPathWeight(grapid, from.Node.Label, to.Node.Label);
+            if (weight >= 0) return weight;
+            else return 0;
+        }
+
+        private Node calculateMinNode(Dictionary<GraphPart, Dictionary<GraphPart, int>> result) {
+            if (result == null || result.Count == 0) return null;
+
+            GraphPart minPart = null;
+            int minValue = int.MaxValue;
+
+            result.ForEach(x => {
+                int tmp = calculateWeighttoNodes(x.Value);
+                if (tmp < minValue) {
+                    minPart = x.Key;
+                    minValue = tmp;
+                }
+            });
+            return minPart.Node;
+        }
+
+        private int calculateWeighttoNodes(Dictionary<GraphPart, int> result) {
+            int sum = 0;
+            result.ForEach(x => {
+                sum += x.Value;
+            });
+            return sum;
         }
     }
 }

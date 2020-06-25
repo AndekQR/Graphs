@@ -109,7 +109,7 @@ namespace Service.Services {
 
         //Po deserializacji wierzchołki grafu były zapisywane w bazie z innymi polami ID
         //po wywołaniu tej metody ich referencje są ustawiane tak żeby w bazie danych ich ID były takie same
-        private void fixReferences(ref Graph graph) {
+        public void fixReferences(ref Graph graph) {
             foreach (GraphPart part in graph.GraphPart) {
                 foreach (Edge edge in part.Edge) {
                     Node node = graph.GraphPart.Find(x => (x.Node.Label == edge.Destination.Label && x.Node.Uid == edge.Destination.Uid)).Node;
@@ -148,69 +148,6 @@ namespace Service.Services {
             SaveGraph(graph);
         }
 
-        // public void UpdateGraph(Graph graph) {
-        //     //TODO: do poprawy
-        //     using (MyDbContext db = new MyDbContext()) {
-        //         bool entity = db.Graphs.AsNoTracking().Any(x => x.Id == graph.Id);
-        //         try {
-        //             if (entity) {
-        //                 var trackedGraphs = db.ChangeTracker.Entries<Graph>().ToList();
-        //                 var trackedGraphsParts = db.ChangeTracker.Entries<Graph>().ToList();
-        //                 var trackedEdges = db.ChangeTracker.Entries<Graph>().ToList();
-        //                 var trackedNodes = db.ChangeTracker.Entries<Node>().ToList();
-        //                 // db.Entry(graph).State = EntityState.Modified;
-        //                 foreach (GraphPart graphPart in graph.GraphPart) {
-        //                     var trackedGraphs1 = db.ChangeTracker.Entries<Graph>().ToList();
-        //                     var trackedGraphsParts1 = db.ChangeTracker.Entries<GraphPart>().ToList();
-        //                     var trackedEdges1 = db.ChangeTracker.Entries<Edge>().ToList();
-        //                     var trackedNodes1 = db.ChangeTracker.Entries<Node>().ToList();
-        //                     if (!db.Set<GraphPart>().Local.Any(x=> x.Id == graphPart.Id)) {
-        //                         if (graphPart.Id == default) {
-        //                             db.Entry(graphPart).State = EntityState.Added;
-        //                         }
-        //                         else {
-        //                             db.Entry(graphPart).State = EntityState.Modified;
-        //                         }
-        //                     }
-        //                     var trackedGraphs2 = db.ChangeTracker.Entries<Graph>().ToList();
-        //                     var trackedGraphsParts2 = db.ChangeTracker.Entries<GraphPart>().ToList();
-        //                     var trackedEdges2 = db.ChangeTracker.Entries<Edge>().ToList();
-        //                     var trackedNodes2 = db.ChangeTracker.Entries<Node>().ToList();
-        //                     // db.Entry(graphPart.Node).State = EntityState.Modified;
-        //                     var trackedGraphs3 = db.ChangeTracker.Entries<Graph>().ToList();
-        //                     var trackedGraphsParts3 = db.ChangeTracker.Entries<GraphPart>().ToList();
-        //                     var trackedEdges3 = db.ChangeTracker.Entries<Edge>().ToList();
-        //                     var trackedNodes3 = db.ChangeTracker.Entries<Node>().ToList();
-        //                     foreach (Edge edge in graphPart.Edge) {
-        //                         if (!db.Set<Edge>().Local.Any(x=> x.Id == edge.Id)) {
-        //                             if (edge.Id == default) {
-        //                                 db.Entry(edge).State = EntityState.Added;
-        //                             }
-        //                             else {
-        //                                 db.Entry(edge).State = EntityState.Modified;
-        //                             }
-        //                         }
-        //                         var trackedGraphs4 = db.ChangeTracker.Entries<Graph>().ToList();
-        //                         var trackedGraphsParts4 = db.ChangeTracker.Entries<GraphPart>().ToList();
-        //                         var trackedEdges4 = db.ChangeTracker.Entries<Edge>().ToList();
-        //                         var trackedNodes4 = db.ChangeTracker.Entries<Node>().ToList();
-        //                         // db.Entry(edge.Destination).State = EntityState.Modified;
-        //                     }
-        //                 }
-        //
-        //                 db.SaveChanges();
-        //             }
-        //             else {
-        //                 throw new KeyNotFoundException("graph not in DB");
-        //             }
-        //         }
-        //         catch (Exception e) {
-        //             Console.WriteLine(e);
-        //             throw;
-        //         }
-        //     }
-        // }
-
         private Edge NewEdge(Node destination, double weight) {
             Edge edge = new Edge(destination, weight);
             edge.Uid = Guid.NewGuid().ToString();
@@ -222,6 +159,28 @@ namespace Service.Services {
             oldEdge.Destination = newEdge.Destination;
             oldEdge.Uid = newEdge.Uid;
             oldEdge.Weight = newEdge.Weight;
+        }
+
+        public Node findNodeByLabel(Graph graph, String label) {
+            return graph.GraphPart.Find(part => part.Node.Label == label).Node;
+        }
+
+        public Node getMinNodeCoarseGrainedAsync(Graph graph) {
+            GraphPart minPart = null;
+            int minWeight = int.MaxValue;
+            int sum = 0;
+            foreach (GraphPart part in graph.GraphPart) {
+                Dictionary<Node, int> tmp = BFSMethods.ShortestPathToAll(graph, part.Node);
+                foreach (KeyValuePair<Node, int> pair in tmp) {
+                    sum += pair.Value;
+                }
+                if (sum < minWeight) {
+                    minPart = part;
+                    minWeight = sum;
+                }
+                sum = 0;
+            }
+            return minPart.Node;
         }
     }
 }

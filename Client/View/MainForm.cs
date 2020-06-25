@@ -11,6 +11,7 @@ using QuickGraph;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
@@ -130,6 +131,63 @@ namespace Client.View {
             MainPresenter mainPresenter = new MainPresenter(this);
             int idToDelete = ((Graph)graphsListView.SelectedItems[0].Tag).Id;
             mainPresenter.deleteGraph(idToDelete);
+        }
+
+        private void bfs_fine_button_Click(object sender, EventArgs e) {
+            LogTextBox = "Computing...";
+            new Thread(async () => {
+                var watch = Stopwatch.StartNew();
+                MainPresenter mainPresenter = new MainPresenter(this);
+                if (graphsListView.InvokeRequired) {
+                    graphsListView.Invoke(new Action(async () => {
+                        if (graphsListView.SelectedItems.Count == 0) return;
+                        Graph graph = (Graph)graphsListView.SelectedItems[0].Tag;
+                        Node result = await mainPresenter.getMinNodeFineGradientAsync(graph);
+                        watch.Stop();
+                        if (result == null) LogTextBox = "null";
+                        else LogTextBox = result.Label;
+                        LogTextBox += Environment.NewLine + "Time: " + watch.ElapsedMilliseconds + " ms";
+                    }));
+                } else {
+                    if (graphsListView.SelectedItems.Count == 0) return;
+                    Graph graph = (Graph)graphsListView.SelectedItems[0].Tag;
+                    Node result = await mainPresenter.getMinNodeFineGradientAsync(graph);
+                    watch.Stop();
+                    if (result == null) LogTextBox = "null";
+                    else LogTextBox = result.Label;
+
+                    LogTextBox += Environment.NewLine + "Time: " + watch.ElapsedMilliseconds + " ms";
+                }
+            }).Start();
+        }
+
+        private void bfs_coarse_button_Click(object sender, EventArgs e) {
+            LogTextBox = "Computing...";
+            new Thread(async () => {
+                var watch = Stopwatch.StartNew();
+                MainPresenter mainPresenter = new MainPresenter(this);
+                if (graphsListView.InvokeRequired) {
+                    graphsListView.Invoke(new Action(async () => {
+                        if (graphsListView.SelectedItems.Count == 0) return;
+                        Graph graph = (Graph)graphsListView.SelectedItems[0].Tag;
+                        Node result = await mainPresenter.getMinNodeCoarseGrainedAsync(graph);
+                        watch.Stop();
+                        if (result == null) LogTextBox = "null";
+                        else LogTextBox = result.Label;
+
+                        LogTextBox += Environment.NewLine + "Time: " + watch.ElapsedMilliseconds + " ms";
+                    }));
+                } else {
+                    if (graphsListView.SelectedItems.Count == 0) return;
+                    Graph graph = (Graph)graphsListView.SelectedItems[0].Tag;
+                    Node result = await mainPresenter.getMinNodeCoarseGrainedAsync(graph);
+                    watch.Stop();
+                    if (result == null) LogTextBox = "null";
+                    else LogTextBox = result.Label;
+
+                    LogTextBox += Environment.NewLine + "Time: " + watch.ElapsedMilliseconds + " ms";
+                }
+            }).Start();
         }
     }
 }

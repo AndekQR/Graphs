@@ -144,7 +144,7 @@ namespace Client.View {
                         Graph graph = (Graph)graphsListView.SelectedItems[0].Tag;
                         Node result = await mainPresenter.getMinNodeFineGradientAsync(graph);
                         watch.Stop();
-                        LogTextBox = "Using BFS coarse-grained calculations " + Environment.NewLine;
+                        LogTextBox = "Using BFS fine-grained calculations " + Environment.NewLine;
                         if (result == null) LogTextBox += "null";
                         else LogTextBox += result.Label;
                         LogTextBox += Environment.NewLine + "Time: " + watch.ElapsedMilliseconds + " ms";
@@ -154,7 +154,7 @@ namespace Client.View {
                     Graph graph = (Graph)graphsListView.SelectedItems[0].Tag;
                     Node result = await mainPresenter.getMinNodeFineGradientAsync(graph);
                     watch.Stop();
-                    LogTextBox = "Using BFS coarse-grained calculations " + Environment.NewLine;
+                    LogTextBox = "Using BFS fine-grained calculations " + Environment.NewLine;
                     if (result == null) LogTextBox += "null";
                     else LogTextBox += result.Label;
 
@@ -174,7 +174,7 @@ namespace Client.View {
                         Graph graph = (Graph)graphsListView.SelectedItems[0].Tag;
                         Node result = await mainPresenter.getMinNodeCoarseGrainedAsync(graph);
                         watch.Stop();
-                        LogTextBox = "Using BFS fine-grained calculations " + Environment.NewLine;
+                        LogTextBox = "Using BFS coarse-grained calculations " + Environment.NewLine;
                         if (result == null) LogTextBox += "null";
                         else LogTextBox += result.Label;
 
@@ -185,7 +185,7 @@ namespace Client.View {
                     Graph graph = (Graph)graphsListView.SelectedItems[0].Tag;
                     Node result = await mainPresenter.getMinNodeCoarseGrainedAsync(graph);
                     watch.Stop();
-                    LogTextBox = "Using BFS fine-grained calculations " + Environment.NewLine;
+                    LogTextBox = "Using BFS coarse-grained calculations " + Environment.NewLine;
                     if (result == null) LogTextBox += "null";
                     else LogTextBox += result.Label;
 

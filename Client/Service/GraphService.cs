@@ -9,7 +9,7 @@ using Client.Model.Visualization;
 
 namespace Client.Service {
 
-    public class GraphService {  //TODO: prawie wszystkie metody do aktualizacji z serwisu
+    public class GraphService {
 
         public Graph NewGraph(bool directed) {
             string uid = Guid.NewGuid().ToString();

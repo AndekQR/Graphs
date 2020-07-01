@@ -142,7 +142,6 @@ namespace Service.Services {
             }
         }
 
-        //TODO: do poprawy
         public void UpdateGraph(Graph graph) {
             DeleteGraph(graph.Id);
             SaveGraph(graph);

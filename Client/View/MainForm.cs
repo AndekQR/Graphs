@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 
@@ -24,8 +25,6 @@ namespace Client.View {
 
         public MainForm() {
             InitializeComponent();
-            /*Binding binding = new Binding("Text", nameTextBox, "Text");
-            lastnameTextBox.DataBindings.Add(binding);*/
             Load += GraphLoad;
 
             new Thread(new ThreadStart(() => {
@@ -140,27 +139,24 @@ namespace Client.View {
                 MainPresenter mainPresenter = new MainPresenter(this);
                 if (graphsListView.InvokeRequired) {
                     graphsListView.Invoke(new Action(async () => {
-                        if (graphsListView.SelectedItems.Count == 0) return;
-                        Graph graph = (Graph)graphsListView.SelectedItems[0].Tag;
-                        Node result = await mainPresenter.getMinNodeFineGradientAsync(graph);
-                        watch.Stop();
-                        LogTextBox = "Using BFS fine-grained calculations " + Environment.NewLine;
-                        if (result == null) LogTextBox += "null";
-                        else LogTextBox += result.Label;
-                        LogTextBox += Environment.NewLine + "Time: " + watch.ElapsedMilliseconds + " ms";
+                        await this.BfsFine(watch, mainPresenter);
                     }));
                 } else {
-                    if (graphsListView.SelectedItems.Count == 0) return;
-                    Graph graph = (Graph)graphsListView.SelectedItems[0].Tag;
-                    Node result = await mainPresenter.getMinNodeFineGradientAsync(graph);
-                    watch.Stop();
-                    LogTextBox = "Using BFS fine-grained calculations " + Environment.NewLine;
-                    if (result == null) LogTextBox += "null";
-                    else LogTextBox += result.Label;
-
-                    LogTextBox += Environment.NewLine + "Time: " + watch.ElapsedMilliseconds + " ms";
+                    await this.BfsFine(watch, mainPresenter);
                 }
             }).Start();
+        }
+
+        private async Task BfsFine(Stopwatch watch, MainPresenter mainPresenter) {
+            if (graphsListView.SelectedItems.Count == 0) return;
+            Graph graph = (Graph)graphsListView.SelectedItems[0].Tag;
+            Node result = await mainPresenter.getMinNodeFineGradientAsync(graph);
+            watch.Stop();
+            LogTextBox = "Using BFS fine-grained calculations " + Environment.NewLine;
+            if (result == null) LogTextBox += "null";
+            else LogTextBox += result.Label;
+
+            LogTextBox += Environment.NewLine + "Time: " + watch.ElapsedMilliseconds + " ms";
         }
 
         private void bfs_coarse_button_Click(object sender, EventArgs e) {
@@ -170,28 +166,24 @@ namespace Client.View {
                 MainPresenter mainPresenter = new MainPresenter(this);
                 if (graphsListView.InvokeRequired) {
                     graphsListView.Invoke(new Action(async () => {
-                        if (graphsListView.SelectedItems.Count == 0) return;
-                        Graph graph = (Graph)graphsListView.SelectedItems[0].Tag;
-                        Node result = await mainPresenter.getMinNodeCoarseGrainedAsync(graph);
-                        watch.Stop();
-                        LogTextBox = "Using BFS coarse-grained calculations " + Environment.NewLine;
-                        if (result == null) LogTextBox += "null";
-                        else LogTextBox += result.Label;
-
-                        LogTextBox += Environment.NewLine + "Time: " + watch.ElapsedMilliseconds + " ms";
+                        await this.BfsCoarse(watch, mainPresenter);
                     }));
                 } else {
-                    if (graphsListView.SelectedItems.Count == 0) return;
-                    Graph graph = (Graph)graphsListView.SelectedItems[0].Tag;
-                    Node result = await mainPresenter.getMinNodeCoarseGrainedAsync(graph);
-                    watch.Stop();
-                    LogTextBox = "Using BFS coarse-grained calculations " + Environment.NewLine;
-                    if (result == null) LogTextBox += "null";
-                    else LogTextBox += result.Label;
-
-                    LogTextBox += Environment.NewLine + "Time: " + watch.ElapsedMilliseconds + " ms";
+                    await this.BfsCoarse(watch, mainPresenter);
                 }
             }).Start();
+        }
+
+        private async Task BfsCoarse(Stopwatch watch, MainPresenter mainPresenter) {
+            if (graphsListView.SelectedItems.Count == 0) return;
+            Graph graph = (Graph)graphsListView.SelectedItems[0].Tag;
+            Node result = await mainPresenter.getMinNodeCoarseGrainedAsync(graph);
+            watch.Stop();
+            LogTextBox = "Using BFS coarse-grained calculations " + Environment.NewLine;
+            if (result == null) LogTextBox += "null";
+            else LogTextBox += result.Label;
+
+            LogTextBox += Environment.NewLine + "Time: " + watch.ElapsedMilliseconds + " ms";
         }
 
         private void dijkstra_fineGradient_Click(object sender, EventArgs e) {
@@ -201,28 +193,24 @@ namespace Client.View {
                 MainPresenter mainPresenter = new MainPresenter(this);
                 if (graphsListView.InvokeRequired) {
                     graphsListView.Invoke(new Action(async () => {
-                        if (graphsListView.SelectedItems.Count == 0) return;
-                        Graph graph = (Graph)graphsListView.SelectedItems[0].Tag;
-                        Node result = await mainPresenter.getMinNodeUsingDijkstraFineGradient(graph);
-                        watch.Stop();
-                        LogTextBox = "Using Dijkstra fine-grained calculations " + Environment.NewLine;
-                        if (result == null) LogTextBox += "null";
-                        else LogTextBox += result.Label;
-
-                        LogTextBox += Environment.NewLine + "Time: " + watch.ElapsedMilliseconds + " ms";
+                        await this.DijkstraFine(watch, mainPresenter);
                     }));
                 } else {
-                    if (graphsListView.SelectedItems.Count == 0) return;
-                    Graph graph = (Graph)graphsListView.SelectedItems[0].Tag;
-                    Node result = await mainPresenter.getMinNodeUsingDijkstraFineGradient(graph);
-                    watch.Stop();
-                    LogTextBox = "Using Dijkstra fine-grained calculations " + Environment.NewLine;
-                    if (result == null) LogTextBox += "null";
-                    else LogTextBox += result.Label;
-
-                    LogTextBox += Environment.NewLine + "Time: " + watch.ElapsedMilliseconds + " ms";
+                    await this.DijkstraFine(watch, mainPresenter);
                 }
             }).Start();
+        }
+
+        private async Task DijkstraFine(Stopwatch watch, MainPresenter mainPresenter) {
+            if (graphsListView.SelectedItems.Count == 0) return;
+            Graph graph = (Graph)graphsListView.SelectedItems[0].Tag;
+            Node result = await mainPresenter.getMinNodeUsingDijkstraFineGradient(graph);
+            watch.Stop();
+            LogTextBox = "Using Dijkstra fine-grained calculations " + Environment.NewLine;
+            if (result == null) LogTextBox += "null";
+            else LogTextBox += result.Label;
+
+            LogTextBox += Environment.NewLine + "Time: " + watch.ElapsedMilliseconds + " ms";
         }
 
         private void dijkstra_coarseGradient_Click(object sender, EventArgs e) {
@@ -232,28 +220,24 @@ namespace Client.View {
                 MainPresenter mainPresenter = new MainPresenter(this);
                 if (graphsListView.InvokeRequired) {
                     graphsListView.Invoke(new Action(async () => {
-                        if (graphsListView.SelectedItems.Count == 0) return;
-                        Graph graph = (Graph)graphsListView.SelectedItems[0].Tag;
-                        Node result = await mainPresenter.getMinNodeUsingDijkstraCoarseGradientAsync(graph);
-                        watch.Stop();
-                        LogTextBox = "Using Dijkstra coarse-grained calculations " + Environment.NewLine;
-                        if (result == null) LogTextBox += "null";
-                        else LogTextBox += result.Label;
-
-                        LogTextBox += Environment.NewLine + "Time: " + watch.ElapsedMilliseconds + " ms";
+                        await this.DijkstraCoarseAsync(watch, mainPresenter);
                     }));
                 } else {
-                    if (graphsListView.SelectedItems.Count == 0) return;
-                    Graph graph = (Graph)graphsListView.SelectedItems[0].Tag;
-                    Node result = await mainPresenter.getMinNodeUsingDijkstraCoarseGradientAsync(graph);
-                    watch.Stop();
-                    LogTextBox = "Using Dijkstra coarse-grained calculations " + Environment.NewLine;
-                    if (result == null) LogTextBox += "null";
-                    else LogTextBox += result.Label;
-
-                    LogTextBox += Environment.NewLine + "Time: " + watch.ElapsedMilliseconds + " ms";
+                    await this.DijkstraCoarseAsync(watch, mainPresenter);
                 }
             }).Start();
+        }
+
+        private async Task DijkstraCoarseAsync(Stopwatch watch, MainPresenter mainPresenter) {
+            if (graphsListView.SelectedItems.Count == 0) return;
+            Graph graph = (Graph)graphsListView.SelectedItems[0].Tag;
+            Node result = await mainPresenter.getMinNodeUsingDijkstraCoarseGradientAsync(graph);
+            watch.Stop();
+            LogTextBox = "Using Dijkstra coarse-grained calculations " + Environment.NewLine;
+            if (result == null) LogTextBox += "null";
+            else LogTextBox += result.Label;
+
+            LogTextBox += Environment.NewLine + "Time: " + watch.ElapsedMilliseconds + " ms";
         }
     }
 }
